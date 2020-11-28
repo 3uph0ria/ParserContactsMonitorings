@@ -16,16 +16,26 @@ class Database
         return $this;
     }
 
+    public function GetAllContacts()
+    {
+        $contactsAll = $this->link->query("SELECT * FROM `contacts`");
+        while ($contact = $contactsAll->fetch(PDO::FETCH_ASSOC))
+        {
+            $contacts[] = $contact;
+        }
+        return $contacts;
+    }
+
     public function GetContacts($contacts, $webSite)
     {
-        $botUser = $this->link->prepare("SELECT * FROM `contacts` WHERE `contacts` = ? OR `web_site` = ?");
-        $botUser->execute(array($contacts, $webSite));
-        return $botUser->fetch(PDO::FETCH_ASSOC);
+        $contact = $this->link->prepare("SELECT * FROM `contacts` WHERE `contacts` = ? OR `web_site` = ?");
+        $contact->execute(array($contacts, $webSite));
+        return $contact->fetch(PDO::FETCH_ASSOC);
     }
 
     public function AddContacts($contacts, $webSite)
     {
-        $botUser = $this->link->prepare("INSERT INTO `contacts` (`contacts`, `web_site`) VALUES(?, ?)");
-        $botUser->execute(array($contacts, $webSite));
+        $contact = $this->link->prepare("INSERT INTO `contacts` (`contacts`, `web_site`) VALUES(?, ?)");
+        $contact->execute(array($contacts, $webSite));
     }
 }
